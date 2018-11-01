@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>哈哈哈</h1>
     <router-view/>
   </div>
 </template>
@@ -10,7 +9,8 @@ export default {
   name: 'App'
 }
 </script>
-
 <style>
-
+#app{
+  height: 100%;
+}
 </style>
