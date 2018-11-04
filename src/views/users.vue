@@ -18,6 +18,30 @@
                 <el-button @click="showDiaAddUser()" type="primary">添加用户</el-button>
             </el-col>
         </el-row>
+        <!-- 分配角色对话框 -->
+        <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRoleuser">
+            <el-form :model="formData">
+              <el-form-item label="用户名" :label-width="formLabelWidth">
+                  <!--需要一个用户名  -->
+                  {{currUserName}}
+              </el-form-item>
+              <el-form-item label="角色" :label-width="formLabelWidth">
+                <el-select v-model="currRoleId" >
+                  <el-option disabled label="请选择" :value="-1"></el-option>
+                  <el-option
+                  v-for="(item,index) in roles"
+                  :key="index"
+                  :label="item.roleName"
+                  :value="item.id">
+                </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisibleRoleuser = false">取 消</el-button>
+              <el-button type="primary" @click="setRole()">确 定</el-button>
+            </div>
+        </el-dialog>
         <!-- 添加的对话框 -->
         <el-dialog title="添加用户" :visible.sync="dialogFormVisibleAdduser">
             <el-form :model="formData">
@@ -81,7 +105,7 @@
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" circle size="mini" :plain="true" @click="showEditdia(scope.row)"></el-button>
-                    <el-button type="success" icon="el-icon-check" circle size="mini" :plain="true"></el-button>
+                    <el-button type="success" icon="el-icon-check" circle size="mini" :plain="true" @click="showRoledia(scope.row)"></el-button>
                     <el-button type="danger" icon="el-icon-delete" circle size="mini" :plain="true" @click="showDelefirm(scope.row)"></el-button>
                 </template>
             </el-table-column>
@@ -98,6 +122,31 @@
             this.loadTableData()
         },
         methods: {
+            // 分配角色  --- 修改用户角色
+            async setRole(){
+                this.dialogFormVisibleRoleuser = false
+                const res = await this.$http.put(`users/${this.getRoleByUserId}/role`,{
+                    rid: this.currRoleId
+                })
+                console.log(res)
+                const {meta:{status,msg}} = res.data
+                if (status === 200) {
+                    this.$message.success(msg)
+                }
+            },
+            // 分配角色 -- 显示对话框
+            async showRoledia(user){
+                this.getRoleByUserId = user.id
+                this.dialogFormVisibleRoleuser = true
+                this.currUserName = user.username
+                const res = await this.$http.get('roles')
+                // console.log(res)
+                this.roles = res.data.data
+                // 根据用户id获取角色id
+                const res1 = await this.$http.get(`users/${user.id}`)
+                // console.log(res1)
+                this.currRoleId = res1.data.data.rid
+            },
             // 编辑用户  -- 发送请求
             async editUser() {
                 this.dialogFormVisibleEdituser = false
@@ -137,6 +186,7 @@
                             this.formData[key] = ''
 
                         }
+                        
                     }
                     // 提示框
                     this.$message.success(msg)
@@ -240,7 +290,17 @@
                 formLabelWidth: '140px',
                 // 编辑用户
                 dialogFormVisibleEdituser: false,
-                currUserId: -1
+                currUserId: -1,
+                // 分配角色对话框
+                dialogFormVisibleRoleuser: false,
+                currUserName: '',
+                // 当前角色id
+                currRoleId: -1,
+                // 角色[测试，主管等]
+                roles: [],
+                getRoleByUserId: -1
+
+                
             }
         }
     }
