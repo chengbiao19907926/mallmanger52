@@ -22,53 +22,16 @@
                 <!-- :router 开启路由模式 如果值为true
                 被激活的导航的index可以修改path 标识-->
                 <el-menu default-active="2" class="el-menu-vertical-demo" :unique-opened="true" :router="true">
-                    <el-submenu index="1">
+                    <el-submenu :index="index+''" v-for="(item1, index) in menus" :key="index">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>用户管理</span>
+                            <span>{{item1.authName}}</span>
                         </template>
-                        <el-menu-item index="/users">
-                            <i class="el-icon-menu"></i>用户列表</el-menu-item>
+                        <el-menu-item :index="'/'+item2.path" v-for="(item2, index) in item1.children" :key="index">
+                            <i class="el-icon-menu"></i>{{item2.authName}}
+                        </el-menu-item>
                     </el-submenu>
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>权限管理</span>
-                        </template>
-
-                        <el-menu-item index="/role">
-                            <i class="el-icon-menu"></i>角色列表</el-menu-item>
-                        <el-menu-item index="/rights">
-                            <i class="el-icon-menu"></i>权限列表</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="3">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>商品管理</span>
-                        </template>
-                        <el-menu-item index="3-1">
-                            <i class="el-icon-menu"></i>商品列表</el-menu-item>
-                        <el-menu-item index="3-2">
-                            <i class="el-icon-menu"></i>分类参数</el-menu-item>
-                        <el-menu-item index="3-3">
-                            <i class="el-icon-menu"></i>商品分类</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="4">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>订单管理</span>
-                        </template>
-                        <el-menu-item index="1-1">
-                            <i class="el-icon-menu"></i>订单列表</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="5">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>数据统计</span>
-                        </template>
-                        <el-menu-item index="1-1">
-                            <i class="el-icon-menu"></i>数据报表</el-menu-item>
-                    </el-submenu>
+                   
                 </el-menu>
             </el-aside>
             <el-main class="main">
@@ -80,13 +43,27 @@
 <script>
     export default {
         beforeCreate() {
-            const token = sessionStorage.getItem('token')
-            if (!token) {
-                this.$message.warning('请先登录')
-                this.$router.push('/login')
+            // const token = sessionStorage.getItem('token')
+            // if (!token) {
+            //     this.$message.warning('请先登录')
+            //     this.$router.push('/login')
+            // }
+        },
+        data(){
+            return {
+                menus: []
             }
         },
+        created() {
+            this.getMenus()
+        },
         methods: {
+            // 动态渲染导航
+            async getMenus(){
+                const res = await this.$http.get(`menus`)
+                console.log(res)
+                this.menus = res.data.data
+            },
             handleSignout() {
                 sessionStorage.clear()
                 this.$message.warning('退出成功')
