@@ -18,28 +18,64 @@
                 <el-button @click="showDiaAddUser()" type="primary">添加用户</el-button>
             </el-col>
         </el-row>
+    
+        <!-- 表格 -->
+        <el-table v-loading="loading" :data="list" style="width: 100%">
+            <el-table-column label="#" width="80" type="index">
+            </el-table-column>
+            <el-table-column prop="username" label="姓名" width="120">
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱">
+            </el-table-column>
+            <el-table-column prop="mobile" label="电话">
+            </el-table-column>
+            <el-table-column label="创建日期">
+                <template slot-scope="scope">
+                    {{scope.row.create_time | fmtDate}}
+                </template>
+            </el-table-column>
+            <el-table-column label="用户状态">
+                <template slot-scope="scope">
+                    <el-switch @change="changeMgState(scope.row)" v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
+                    </el-switch>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" width="200">
+                <template slot-scope="scope">
+                    <el-button type="primary" icon="el-icon-edit" circle size="mini" :plain="true" @click="showEditdia(scope.row)"></el-button>
+                    <el-button type="success" icon="el-icon-check" circle size="mini" :plain="true" @click="showRoledia(scope.row)"></el-button>
+                    <el-button type="danger" icon="el-icon-delete" circle size="mini" :plain="true" @click="showDelefirm(scope.row)"></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- 分页 -->
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6, 8]"
+            :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+
+        <!-- 所有对话框 -->
         <!-- 分配角色对话框 -->
         <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRoleuser">
             <el-form :model="formData">
-              <el-form-item label="用户名" :label-width="formLabelWidth">
-                  <!--需要一个用户名  -->
-                  {{currUserName}}
-              </el-form-item>
-              <el-form-item label="角色" :label-width="formLabelWidth">
+                <el-form-item label="用户名" :label-width="formLabelWidth">
+                    <!--需要一个用户名  -->
+                    {{currUserName}}
+                </el-form-item>
+                <el-form-item label="角色" :label-width="formLabelWidth">
                 <el-select v-model="currRoleId" >
-                  <el-option disabled label="请选择" :value="-1"></el-option>
-                  <el-option
-                  v-for="(item,index) in roles"
-                  :key="index"
-                  :label="item.roleName"
-                  :value="item.id">
+                    <el-option disabled label="请选择" :value="-1"></el-option>
+                    <el-option
+                    v-for="(item,index) in roles"
+                    :key="index"
+                    :label="item.roleName"
+                    :value="item.id">
                 </el-option>
                 </el-select>
-              </el-form-item>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisibleRoleuser = false">取 消</el-button>
-              <el-button type="primary" @click="setRole()">确 定</el-button>
+                <el-button @click="dialogFormVisibleRoleuser = false">取 消</el-button>
+                <el-button type="primary" @click="setRole()">确 定</el-button>
             </div>
         </el-dialog>
         <!-- 添加的对话框 -->
@@ -81,40 +117,7 @@
                 <el-button type="primary" @click="editUser()">确定</el-button>
             </div>
         </el-dialog>
-        <!-- 表格 -->
-        <el-table v-loading="loading" :data="list" style="width: 100%">
-            <el-table-column label="#" width="80" type="index">
-            </el-table-column>
-            <el-table-column prop="username" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="email" label="邮箱">
-            </el-table-column>
-            <el-table-column prop="mobile" label="电话">
-            </el-table-column>
-            <el-table-column label="创建日期">
-                <template slot-scope="scope">
-                    {{scope.row.create_time | fmtDate}}
-                </template>
-            </el-table-column>
-            <el-table-column label="用户状态">
-                <template slot-scope="scope">
-                    <el-switch @change="changeMgState(scope.row)" v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
-                    </el-switch>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="200">
-                <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" circle size="mini" :plain="true" @click="showEditdia(scope.row)"></el-button>
-                    <el-button type="success" icon="el-icon-check" circle size="mini" :plain="true" @click="showRoledia(scope.row)"></el-button>
-                    <el-button type="danger" icon="el-icon-delete" circle size="mini" :plain="true" @click="showDelefirm(scope.row)"></el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6, 8]"
-            :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-    </el-card>
+        </el-card>
 </template>
 <script>
     export default {
@@ -288,7 +291,7 @@
                     mobile: ''
                 },
                 formLabelWidth: '140px',
-                // 编辑用户
+                // 编辑用户对话框
                 dialogFormVisibleEdituser: false,
                 currUserId: -1,
                 // 分配角色对话框
