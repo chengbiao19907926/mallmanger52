@@ -16,7 +16,7 @@ HttpTool.install = (Vue) => {
     return config;
   }, function (error) {
     // 对请求错误做些什么
-    return Promise.reject(error);
+    return Promise.reject(error)
   });
 
   // 添加响应拦截器
@@ -25,8 +25,8 @@ HttpTool.install = (Vue) => {
     return response;
   }, function (error) {
     // 对响应错误做点什么
-    return Promise.reject(error);
-  });
+    return Promise.reject(error)
+  })
   // 将axios挂载到vue的原型上
   Vue.prototype.$http = axios
 }

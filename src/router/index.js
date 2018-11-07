@@ -5,6 +5,10 @@ import Home from '@/views/home.vue'
 import Users from '@/views/users.vue'
 import Rights from '@/views/rights.vue'
 import Roles from '@/views/roles.vue'
+import Cateparams from '@/views/cateparams.vue'
+import Goodscate from '@/views/goodscate.vue'
+import Goodslist from '@/views/goodslist.vue'
+import Goodsadd from '@/views/goodsadd.vue'
 
 
 
@@ -22,24 +26,13 @@ const router = new Router({
       path: '/',
       component: Home,
       children: [
-        {
-          name: 'users',
-          path: '/users',
-          component: Users
-
-        },
-        {
-          name: 'rights',
-          path: '/rights',
-          component: Rights
-
-        },
-        {
-          name: 'roles',
-          path: '/roles',
-          component: Roles
-
-        }
+        { name: 'users',path: '/users',component: Users},
+        { name: 'rights',path: '/rights',component: Rights},
+        { name: 'roles',path: '/roles',component: Roles},
+        { name: 'cateparams',path: '/params',component: Cateparams},
+        { name: 'goodscate',path: '/categories',component: Goodscate},
+        { name: 'goodslist',path: '/goods',component: Goodslist},
+        { name: 'goodsadd',path: '/goodsadd',component: Goodsadd}
       ]
     }
 
