@@ -9,6 +9,8 @@ import Cateparams from '@/views/cateparams.vue'
 import Goodscate from '@/views/goodscate.vue'
 import Goodslist from '@/views/goodslist.vue'
 import Goodsadd from '@/views/goodsadd.vue'
+import Order from '@/views/order.vue'
+import Reports from '@/views/reports.vue'
 
 
 
@@ -32,11 +34,11 @@ const router = new Router({
         { name: 'cateparams',path: '/params',component: Cateparams},
         { name: 'goodscate',path: '/categories',component: Goodscate},
         { name: 'goodslist',path: '/goods',component: Goodslist},
-        { name: 'goodsadd',path: '/goodsadd',component: Goodsadd}
-      ]
-    }
-
-  ]
+        { name: 'goodsadd',path: '/goodsadd',component: Goodsadd},
+        { name: 'order',path: '/orders',component: Order},
+        { name: 'reports',path: '/reports',component: Reports}
+      ]}
+    ]
 })
 router.beforeEach((to, from, next) => {
   console.log(to, from)
