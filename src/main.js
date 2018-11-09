@@ -6,7 +6,7 @@ import MyBread from '@/components/myBread.vue'
 import moment from 'moment'
 import HttpTool from '@/plugins/http.js'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/index.css'
 import router from './router'
 

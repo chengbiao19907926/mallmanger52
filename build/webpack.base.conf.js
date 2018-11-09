@@ -24,6 +24,25 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  // vue:Vue
+  // key值是 import vue from 'vue'
+  // value值是包暴漏的全局变量
+  // externals: {
+  //   vue: 'Vue',
+  //   axios: 'axios',
+  //   echarts: 'echarts',
+  //   'element-ui': 'ELEMENT',
+  //   moment: 'moment',
+  //   'vue-router': 'VueRouter'
+  // },
+  externals:{
+    vue: 'Vue',
+    axios: 'axios',
+    echarts: 'echarts',
+    'element-ui': 'ELEMENT',
+    moment: 'moment',
+    'Vue-router': 'VueRouter'
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

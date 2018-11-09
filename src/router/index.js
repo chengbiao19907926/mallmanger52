@@ -1,22 +1,24 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/views/login.vue'
-import Home from '@/views/home.vue'
-import Users from '@/views/users.vue'
-import Rights from '@/views/rights.vue'
-import Roles from '@/views/roles.vue'
-import Cateparams from '@/views/cateparams.vue'
-import Goodscate from '@/views/goodscate.vue'
-import Goodslist from '@/views/goodslist.vue'
-import Goodsadd from '@/views/goodsadd.vue'
-import Order from '@/views/order.vue'
-import Reports from '@/views/reports.vue'
+
+
+// const  VueRouter from 'vue-router'
+
+const  Login = () => import ('@/views/login.vue')
+const  Home = () => import ('@/views/home.vue')
+const  Users = () => import('@/views/users.vue')
+const  Rights = () => import ('@/views/rights.vue')
+const  Roles = () => import ('@/views/roles.vue')
+const  Cateparams = () => import ('@/views/cateparams.vue')
+const  Goodscate = () => import ('@/views/goodscate.vue')
+const  Goodslist = () => import ('@/views/goodslist.vue')
+const  Goodsadd = () => import ('@/views/goodsadd.vue')
+const  Order = () => import ('@/views/order.vue')
+const  Reports = () => import ('@/views/reports.vue')
 
 
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-const router = new Router({
+const router = new VueRouter({
   routes: [
     {
       name: 'login',
